@@ -7,6 +7,7 @@ import { UserWarning } from './UserWarning';
 import { getTodos, USER_ID } from './api/todos';
 import { Todo } from './types/Todo';
 import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
 
 const createNewTodo = (todos: Todo[], title: string, userId: number): Todo => {
   const newId =
@@ -158,39 +159,7 @@ export const App: React.FC = () => {
               {uncompletedTodosCount} items left
             </span>
 
-            {/* Active link should have the 'selected' class */}
-            <nav className="filter" data-cy="Filter">
-              <a
-                href="#/"
-                className={cn('filter__link', { selected: filter === 'All' })}
-                data-cy="FilterLinkAll"
-                onClick={() => handleFilter('All')}
-              >
-                All
-              </a>
-
-              <a
-                href="#/active"
-                className={cn('filter__link', {
-                  selected: filter === 'Active',
-                })}
-                data-cy="FilterLinkActive"
-                onClick={() => handleFilter('Active')}
-              >
-                Active
-              </a>
-
-              <a
-                href="#/completed"
-                className={cn('filter__link', {
-                  selected: filter === 'Completed',
-                })}
-                data-cy="FilterLinkCompleted"
-                onClick={() => handleFilter('Completed')}
-              >
-                Completed
-              </a>
-            </nav>
+            <TodoFilter filter={filter} handleFilter={handleFilter} />
 
             {/* this button should be disabled if there are no completed todos */}
             <button
