@@ -1,44 +1,36 @@
 import React from 'react';
 import cn from 'classnames';
 
-type FilterType = 'All' | 'Active' | 'Completed';
+import { FilterType } from '../../types/FilterType';
 
 type Props = {
-  filter: string;
+  filter: FilterType;
   handleFilter: (filter: FilterType) => void;
 };
 
-export const TodoFilter: React.FC<Props> = ({ filter, handleFilter }) => (
-  <nav className="filter" data-cy="Filter">
-    <a
-      href="#/"
-      className={cn('filter__link', { selected: filter === 'All' })}
-      data-cy="FilterLinkAll"
-      onClick={() => handleFilter('All')}
-    >
-      All
-    </a>
+const filters = [
+  { type: FilterType.All, label: 'All', href: '#/' },
+  { type: FilterType.Active, label: 'Active', href: '#/active' },
+  { type: FilterType.Completed, label: 'Completed', href: '#/completed' },
+];
 
-    <a
-      href="#/active"
-      className={cn('filter__link', {
-        selected: filter === 'Active',
-      })}
-      data-cy="FilterLinkActive"
-      onClick={() => handleFilter('Active')}
-    >
-      Active
-    </a>
+export const TodoFilter: React.FC<Props> = ({ filter, handleFilter }) => {
+  const getFilterClassName = (currentFilter: FilterType) =>
+    cn('filter__link', { selected: filter === currentFilter });
 
-    <a
-      href="#/completed"
-      className={cn('filter__link', {
-        selected: filter === 'Completed',
-      })}
-      data-cy="FilterLinkCompleted"
-      onClick={() => handleFilter('Completed')}
-    >
-      Completed
-    </a>
-  </nav>
-);
+  return (
+    <nav className="filter" data-cy="Filter">
+      {filters.map(({ type, label, href }) => (
+        <a
+          key={type}
+          href={href}
+          className={getFilterClassName(type)}
+          data-cy={`FilterLink${type}`}
+          onClick={() => handleFilter(type)}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  );
+};

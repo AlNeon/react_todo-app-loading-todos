@@ -8,6 +8,7 @@ import { getTodos, USER_ID } from './api/todos';
 import { Todo } from './types/Todo';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { FilterType } from './types/FilterType';
 
 const createNewTodo = (todos: Todo[], title: string, userId: number): Todo => {
   const newId =
@@ -25,7 +26,7 @@ export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState<'All' | 'Active' | 'Completed'>('All');
+  const [filter, setFilter] = useState<FilterType>(FilterType.All);
   const [toggleAllButtonIsActive, setToggleAllButtonIsActive] = useState(
     todos.every(todo => todo.completed === true),
   );
@@ -33,9 +34,9 @@ export const App: React.FC = () => {
   const filteredTodos = useMemo(() => {
     return todos.filter(todo => {
       switch (filter) {
-        case 'Active':
+        case FilterType.Active:
           return !todo.completed;
-        case 'Completed':
+        case FilterType.Completed:
           return todo.completed;
         default:
           return true;
@@ -82,8 +83,7 @@ export const App: React.FC = () => {
     return <UserWarning />;
   }
 
-  const handleFilter = (newFilter: 'All' | 'Active' | 'Completed') =>
-    setFilter(newFilter);
+  const handleFilter = (newFilter: FilterType) => setFilter(newFilter);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);

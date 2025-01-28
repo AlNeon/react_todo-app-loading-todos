@@ -24,30 +24,30 @@ export const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
 
   return (
     <section className="todoapp__main" data-cy="TodoList">
-      {todos.map(todo => (
+      {todos.map(({ id, completed, title }) => (
         <div
-          key={todo.id}
+          key={id}
           data-cy="Todo"
-          className={cn('todo', { completed: todo.completed })}
+          className={cn('todo', { completed: completed })}
         >
           <label className="todo__status-label">
             <input
               data-cy="TodoStatus"
               type="checkbox"
               className="todo__status"
-              checked={todo.completed}
-              onChange={() => handleToggleTodoCompleted(todo.id)}
+              checked={completed}
+              onChange={() => handleToggleTodoCompleted(id)}
             />
           </label>
 
           <span data-cy="TodoTitle" className="todo__title">
-            {todo.title}
+            {title}
           </span>
           <button
             type="button"
             className="todo__remove"
             data-cy="TodoDelete"
-            onClick={() => handleDelete(todo.id)}
+            onClick={() => handleDelete(id)}
           >
             ×
           </button>
